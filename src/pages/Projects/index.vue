@@ -219,10 +219,12 @@ export default {
       shell.openPath(path);
     },
     gotoImages(data) {
-      this.$router.push({
-        path: "/images",
-        query: data,
-      });
+      if (this.directoryExists(data.path)) {
+        this.$router.push({
+          path: "/images",
+          query: data,
+        });
+      }
     },
   },
 };
