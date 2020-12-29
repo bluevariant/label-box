@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { format, LocalStorage } from "quasar";
+import { format } from "quasar";
 import { v4 } from "uuid";
 import _ from "lodash";
 
