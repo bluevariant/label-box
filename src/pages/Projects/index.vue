@@ -7,7 +7,9 @@
 
     <q-card>
       <q-card-section>
-        <q-btn color="primary" label="New Project" outline icon="las la-plus" v-on:click="showCreate = !showCreate" />
+        <q-btn-group flat>
+          <q-btn color="primary" label="New" flat icon="las la-plus" v-on:click="showCreate = !showCreate" />
+        </q-btn-group>
       </q-card-section>
       <q-card-section>
         <q-item v-if="list.length === 0">
@@ -23,9 +25,9 @@
                 <q-item-label caption>{{ item.path }}</q-item-label>
               </q-item-section>
               <q-item-section side>
-                <q-btn-group outline>
-                  <q-btn outline color="primary" icon="las la-pen" v-on:click="editProject(item)" />
-                  <q-btn outline color="red" icon="las la-trash" v-on:click="deleteProject(item)" />
+                <q-btn-group flat>
+                  <q-btn flat color="primary" icon="las la-pen" v-on:click="editProject(item)" />
+                  <q-btn flat color="red" icon="las la-trash" v-on:click="deleteProject(item)" />
                 </q-btn-group>
               </q-item-section>
             </q-item>
