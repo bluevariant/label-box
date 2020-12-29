@@ -16,4 +16,9 @@ export default {
       LocalStorage.set("projects", projects);
     },
   },
+  actions: {
+    setProjects({ commit }, projects) {
+      commit("setProjects", projects);
+    },
+  },
 };

@@ -143,8 +143,8 @@ export default {
   mounted() {},
   watch: {
     list() {
-      this.$store.commit("projects/setProjects", this.list);
-    },
+      this.$store.dispatch("projects/setProjects", this.list);
+    },z
   },
   methods: {
     onSubmit() {
