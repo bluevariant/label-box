@@ -25,7 +25,7 @@
         </q-item>
         <q-virtual-scroll style="max-height: 100%" :items="list" separator>
           <template v-slot="{ item, index }">
-            <q-item :key="index" clickable>
+            <q-item :key="index" clickable v-on:click="gotoImages(item)">
               <q-item-section>
                 <q-item-label>
                   <span class="text-grey-6 inline-block q-mr-xs"> #{{ index }} </span>
@@ -40,13 +40,18 @@
               </q-item-section>
               <q-item-section side>
                 <q-btn-group flat>
-                  <q-btn flat icon="las la-folder" v-on:click="openDirectory(item.path)">
+                  <q-btn flat icon="las la-folder" v-on:click.stop="openDirectory(item.path)">
                     <q-tooltip>Show in Explorer</q-tooltip>
                   </q-btn>
-                  <q-btn flat color="primary" icon="las la-pen" v-on:click="editProject(item)">
+                  <q-btn flat color="primary" icon="las la-pen" v-on:click.stop="editProject(item)">
                     <q-tooltip>Edit</q-tooltip>
                   </q-btn>
-                  <q-btn flat color="negative" icon="las la-trash" v-on:click="deleteProject(item)">
+                  <q-btn
+                    flat
+                    color="negative"
+                    icon="las la-trash"
+                    v-on:click.stop="deleteProject(item)"
+                  >
                     <q-tooltip content-class="bg-negative">Delete</q-tooltip>
                   </q-btn>
                 </q-btn-group>
@@ -116,9 +121,9 @@ const { dialog, shell } = require("electron").remote;
 const homedir = require("os").homedir();
 const { capitalize } = format;
 
-function getDefaultData() {
+function getDefaultData(self) {
   return {
-    list: LocalStorage.getItem("projects") || [],
+    list: self.$store.getters["projects/getAllProjects"],
     showCreate: false,
     projectData: {
       name: null,
@@ -133,12 +138,12 @@ function getDefaultData() {
 export default {
   name: "ProjectsPage",
   data() {
-    return getDefaultData();
+    return getDefaultData(this);
   },
   mounted() {},
   watch: {
     list() {
-      LocalStorage.set("projects", this.list);
+      this.$store.commit("projects/setProjects", this.list);
     },
   },
   methods: {
@@ -148,7 +153,6 @@ export default {
       if (this.$refs.name.hasError || this.$refs.path.hasError) return;
       let list = _.cloneDeep(this.list);
       let index = _.findIndex(list, (v) => v.id === this.projectData.id);
-      console.log(index);
       if (index === -1) {
         list.push(_.cloneDeep(this.projectData));
       } else {
@@ -163,7 +167,7 @@ export default {
       this.resetForm();
     },
     resetForm() {
-      this.projectData = getDefaultData().projectData;
+      this.projectData = getDefaultData(this).projectData;
       this.showCreate = false;
       this.showEdit = false;
     },
@@ -213,6 +217,12 @@ export default {
     },
     openDirectory(path) {
       shell.openPath(path);
+    },
+    gotoImages(data) {
+      this.$router.push({
+        path: "/images",
+        query: data,
+      });
     },
   },
 };
