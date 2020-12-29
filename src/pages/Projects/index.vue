@@ -144,7 +144,7 @@ export default {
   watch: {
     list() {
       this.$store.dispatch("projects/setProjects", this.list);
-    },z
+    },
   },
   methods: {
     onSubmit() {
