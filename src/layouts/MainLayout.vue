@@ -24,7 +24,9 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page padding class="q-pa-md q-gutter-sm">
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
