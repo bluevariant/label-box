@@ -11,15 +11,12 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
         <q-toolbar-title />
-        <div>
+        <q-item tag="a" class="items-center" v-on:click="openMyGithub">
           <q-avatar>
-            <img
-              src="../assets/face.png"
-              alt="logo"
-            />
+            <img src="../assets/face.png" alt="logo" />
           </q-avatar>
           @bluevariant
-        </div>
+        </q-item>
       </q-toolbar>
     </q-header>
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
@@ -38,6 +35,8 @@
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
+
+const { shell } = require("electron").remote;
 
 const linksData = [
   {
@@ -74,6 +73,11 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: linksData,
     };
+  },
+  methods: {
+    openMyGithub() {
+      shell.openExternal("https://github.com/bluevariant");
+    },
   },
 };
 </script>
