@@ -14,7 +14,7 @@
         <div>
           <q-avatar>
             <img
-              src="https://avatars3.githubusercontent.com/u/22487014?s=460&u=5a1dbae3df4773e0af96e059030aa20361b9bf97&v=4"
+              src="../assets/face.png"
               alt="logo"
             />
           </q-avatar>
