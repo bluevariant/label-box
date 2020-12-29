@@ -15,7 +15,8 @@
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "prettier": "^2.2.1",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "vue-fragment": "^1.5.1"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

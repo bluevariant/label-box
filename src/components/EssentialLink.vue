@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
+  <q-item tag="a" v-on:click="clickLink">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -21,20 +21,28 @@ export default {
       type: String,
       required: true,
     },
-
     caption: {
       type: String,
       default: "",
     },
-
     link: {
       type: String,
       default: "#",
     },
-
     icon: {
       type: String,
       default: "",
+    },
+  },
+  methods: {
+    clickLink: function (e) {
+      e.preventDefault();
+      if (!this.$props.link) return;
+      if (this.$props.link.startsWith("http")) {
+        window.open(this.$props.link, "_blank");
+      } else {
+        this.$router.push(this.$props.link);
+      }
     },
   },
 };

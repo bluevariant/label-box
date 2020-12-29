@@ -37,25 +37,25 @@ const linksData = [
     title: "Projects",
     caption: "Manage your Projects",
     icon: "las la-folder-open",
-    link: "https://quasar.dev",
+    link: "/projects",
   },
   {
     title: "YOLO label",
     caption: "Image Labeling for YOLO",
     icon: "las la-otter",
-    link: "https://quasar.dev",
+    link: "/yolo-label",
   },
   {
     title: "Random background",
     caption: "Merge sample to rand bg",
     icon: "las la-icons",
-    link: "https://quasar.dev",
+    link: "/random-background",
   },
   {
     title: "Labels",
     caption: "Manage your labels",
     icon: "las la-tag",
-    link: "https://quasar.dev",
+    link: "labels",
   },
 ];
 
