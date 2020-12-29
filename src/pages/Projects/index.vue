@@ -21,13 +21,25 @@
           <template v-slot="{ item, index }">
             <q-item :key="index" clickable>
               <q-item-section>
-                <q-item-label>#{{ index }} - {{ capitalize(item.name) }}</q-item-label>
-                <q-item-label caption>{{ item.path }}</q-item-label>
+                <q-item-label>
+                  <span class="text-grey-6 inline-block q-mr-xs">#{{ index }}</span>
+                  <span>{{ capitalize(item.name) }}</span>
+                </q-item-label>
+                <q-item-label caption v-bind:class="directoryExists(item.path) ? undefined : 'text-negative'">
+                  {{ item.path }}
+                </q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-btn-group flat>
-                  <q-btn flat color="primary" icon="las la-pen" v-on:click="editProject(item)" />
-                  <q-btn flat color="red" icon="las la-trash" v-on:click="deleteProject(item)" />
+                  <q-btn flat icon="las la-folder" v-on:click="openDirectory(item.path)">
+                    <q-tooltip>Show in Explorer</q-tooltip>
+                  </q-btn>
+                  <q-btn flat color="primary" icon="las la-pen" v-on:click="editProject(item)">
+                    <q-tooltip>Edit</q-tooltip>
+                  </q-btn>
+                  <q-btn flat color="negative" icon="las la-trash" v-on:click="deleteProject(item)">
+                    <q-tooltip content-class="bg-negative">Delete</q-tooltip>
+                  </q-btn>
                 </q-btn-group>
               </q-item-section>
             </q-item>
@@ -63,7 +75,7 @@
               clearable
               :rules="[
                 (val) => (val && val.length > 0) || 'Please type something',
-                (val) => fileExists(val) || 'Directory does not exist',
+                (val) => directoryExists(val) || 'Directory does not exist',
               ]"
             >
               <template v-slot:append>
@@ -71,7 +83,10 @@
               </template>
             </q-input>
             <div>
-              <q-btn label="Submit" type="submit" color="primary" />
+              <q-btn-group flat>
+                <q-btn flat label="Save" type="submit" color="primary" />
+                <q-btn flat label="Cancel" type="button" v-on:click="resetForm" />
+              </q-btn-group>
             </div>
           </form>
         </q-card-section>
@@ -86,25 +101,30 @@ import { v4 } from "uuid";
 import _ from "lodash";
 
 const fs = require("fs-extra");
-const { dialog } = require("electron").remote;
+const { dialog, shell } = require("electron").remote;
 const homedir = require("os").homedir();
 const { capitalize } = format;
+
+function getDefaultData() {
+  return {
+    list: LocalStorage.getItem("projects") || [],
+    showCreate: false,
+    projectData: {
+      name: null,
+      path: null,
+      id: v4(),
+    },
+    defaultOpenDirectory: homedir,
+    showEdit: false,
+  };
+}
 
 export default {
   name: "ProjectsPage",
   data() {
-    return {
-      list: LocalStorage.getItem("projects") || [],
-      showCreate: false,
-      projectData: {
-        name: null,
-        path: null,
-        id: v4(),
-      },
-      defaultOpenDirectory: homedir,
-      showEdit: false,
-    };
+    return getDefaultData();
   },
+  mounted() {},
   watch: {
     list() {
       LocalStorage.set("projects", this.list);
@@ -130,17 +150,13 @@ export default {
         message: this.showEdit ? "Project edited." : "Project created.",
       });
       this.resetForm();
+    },
+    resetForm() {
+      this.projectData = getDefaultData().projectData;
       this.showCreate = false;
       this.showEdit = false;
     },
-    resetForm() {
-      this.projectData = {
-        name: null,
-        path: null,
-        id: v4(),
-      };
-    },
-    fileExists(path) {
+    directoryExists(path) {
       return fs.pathExistsSync(path) && fs.lstatSync(path).isDirectory();
     },
     selectFolder() {
@@ -165,8 +181,8 @@ export default {
     deleteProject(data) {
       this.$q
         .dialog({
-          title: "Confirm",
-          message: "Are you sure?",
+          title: "Project: " + data.name,
+          message: `Are you sure want to delete this project?`,
           cancel: true,
           persistent: true,
         })
@@ -183,6 +199,9 @@ export default {
             message: "Project deleted.",
           });
         });
+    },
+    openDirectory(path) {
+      shell.openPath(path);
     },
   },
 };

@@ -3,7 +3,7 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn flat dense round icon="las la-bars" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
-        <q-toolbar-title>Label Enhancer</q-toolbar-title>
+        <q-toolbar-title></q-toolbar-title>
         <div>
           <q-avatar>
             <img
@@ -18,7 +18,7 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-list>
-        <q-item-label header class="text-grey-8">Essential Menu</q-item-label>
+        <q-item-label header class="text-grey-8">Label Enhancer</q-item-label>
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>

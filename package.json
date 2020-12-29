@@ -1,8 +1,8 @@
 {
   "name": "label-enhancement",
   "version": "0.0.1",
-  "description": "Label Enhancement",
-  "productName": "Label Enhancement",
+  "description": "Machine Learning Utilities",
+  "productName": "Machine Learning Utilities",
   "author": "bluevariant <0x317374@gmail.com>",
   "private": true,
   "scripts": {
