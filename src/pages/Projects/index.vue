@@ -76,6 +76,7 @@
               autofocus
               clearable
               :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+              v-on:focus="(e) => e.target.select()"
             />
             <q-input
               ref="path"
@@ -86,6 +87,7 @@
                 (val) => (val && val.length > 0) || 'Please type something',
                 (val) => directoryExists(val) || 'Directory does not exist',
               ]"
+              v-on:focus="(e) => e.target.select()"
             >
               <template v-slot:append>
                 <q-btn flat icon="las la-folder-plus" color="primary" v-on:click="selectFolder" />
