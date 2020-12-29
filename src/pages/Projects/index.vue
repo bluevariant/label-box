@@ -8,7 +8,13 @@
     <q-card>
       <q-card-section>
         <q-btn-group flat>
-          <q-btn color="primary" label="New" flat icon="las la-plus" v-on:click="showCreate = !showCreate" />
+          <q-btn
+            color="primary"
+            label="New"
+            flat
+            icon="las la-plus"
+            v-on:click="showCreate = !showCreate"
+          />
         </q-btn-group>
       </q-card-section>
       <q-card-section>
@@ -22,10 +28,13 @@
             <q-item :key="index" clickable>
               <q-item-section>
                 <q-item-label>
-                  <span class="text-grey-6 inline-block q-mr-xs">#{{ index }}</span>
+                  <span class="text-grey-6 inline-block q-mr-xs"> #{{ index }} </span>
                   <span>{{ capitalize(item.name) }}</span>
                 </q-item-label>
-                <q-item-label caption v-bind:class="directoryExists(item.path) ? undefined : 'text-negative'">
+                <q-item-label
+                  caption
+                  v-bind:class="directoryExists(item.path) ? undefined : 'text-negative'"
+                >
                   {{ item.path }}
                 </q-item-label>
               </q-item-section>
