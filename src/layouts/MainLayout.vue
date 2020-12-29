@@ -1,18 +1,24 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn flat dense round icon="las la-bars" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
+        <q-toolbar-title>Label Enhancer</q-toolbar-title>
+        <div>
+          <q-avatar>
+            <img
+              src="https://avatars3.githubusercontent.com/u/22487014?s=460&u=5a1dbae3df4773e0af96e059030aa20361b9bf97&v=4"
+              alt="logo"
+            />
+          </q-avatar>
+          @bluevariant
+        </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-list>
-        <q-item-label header class="text-grey-8"> Essential Links </q-item-label>
+        <q-item-label header class="text-grey-8">Essential Menu</q-item-label>
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
@@ -28,46 +34,28 @@ import EssentialLink from "components/EssentialLink.vue";
 
 const linksData = [
   {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
+    title: "Projects",
+    caption: "Manage your Projects",
+    icon: "las la-folder-open",
     link: "https://quasar.dev",
   },
   {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
+    title: "YOLO label",
+    caption: "Image Labeling for YOLO",
+    icon: "las la-otter",
+    link: "https://quasar.dev",
   },
   {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
+    title: "Random background",
+    caption: "Merge sample to rand bg",
+    icon: "las la-icons",
+    link: "https://quasar.dev",
   },
   {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
+    title: "Labels",
+    caption: "Manage your labels",
+    icon: "las la-tag",
+    link: "https://quasar.dev",
   },
 ];
 
