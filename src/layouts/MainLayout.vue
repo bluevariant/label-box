@@ -26,9 +26,7 @@
       </q-list>
     </q-drawer>
     <q-page-container>
-      <q-page padding class="q-pa-md q-gutter-md">
-        <router-view />
-      </q-page>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>

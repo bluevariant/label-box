@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <q-page padding class="q-gutter-md">
     <q-breadcrumbs>
       <q-breadcrumbs-el icon="las la-home" to="/" />
       <q-breadcrumbs-el label="Projects" />
@@ -108,7 +108,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </fragment>
+  </q-page>
 </template>
 
 <script>
