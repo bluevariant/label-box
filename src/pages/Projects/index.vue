@@ -184,6 +184,9 @@ export default {
           if (result.canceled) return;
           if (result.filePaths.length > 0) {
             this.projectData.path = result.filePaths[0];
+            if (!this.projectData.name) {
+              this.projectData.name = this.projectData.path.replace(/\\/g, "/").split("/").pop();
+            }
           }
         });
     },
