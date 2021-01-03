@@ -28,14 +28,14 @@
             <q-item :key="index" clickable v-on:click="gotoImages(item)">
               <q-item-section>
                 <q-item-label>
-                  <span class="text-grey-6 inline-block q-mr-xs"> #{{ index }} </span>
+                  <!--                  <span class="text-grey-6 inline-block q-mr-xs"> #{{ index }} </span>-->
                   <span>{{ capitalize(item.name) }}</span>
                 </q-item-label>
                 <q-item-label
                   caption
                   v-bind:class="directoryExists(item.path) ? undefined : 'text-negative'"
                 >
-                  {{ item.path }}
+                  {{ beautyPath(item.path) }}
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
@@ -224,10 +224,18 @@ export default {
     gotoImages(data) {
       if (this.directoryExists(data.path)) {
         this.$router.push({
-          path: "/images",
+          path: "/Labeling",
           query: data,
         });
       }
+    },
+    beautyPath(fullPath) {
+      fullPath = fullPath.replace(/\\/g, "/");
+      let mHomedir = homedir.replace(/\\/g, "/");
+      if (fullPath.includes(mHomedir)) {
+        fullPath = fullPath.replace(mHomedir, "~");
+      }
+      return fullPath;
     },
   },
 };

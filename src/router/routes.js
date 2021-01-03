@@ -5,7 +5,7 @@ const routes = [
     children: [
       { path: "", redirect: "/projects" },
       { path: "/projects", component: () => import("pages/Projects") },
-      { path: "/images", component: () => import("pages/images") },
+      { path: "/labeling", component: () => import("pages/Labeling") },
     ],
   },
 

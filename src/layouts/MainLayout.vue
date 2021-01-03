@@ -49,18 +49,18 @@ const linksData = [
     icon: "las la-otter",
     link: "/yolo-label",
   },
-  {
-    title: "Random background",
-    caption: "Merge sample to rand bg",
-    icon: "las la-icons",
-    link: "/random-background",
-  },
-  {
-    title: "Labels",
-    caption: "Manage your labels",
-    icon: "las la-tag",
-    link: "labels",
-  },
+  // {
+  //   title: "Random background",
+  //   caption: "Merge sample to rand bg",
+  //   icon: "las la-icons",
+  //   link: "/random-background",
+  // },
+  // {
+  //   title: "Labels",
+  //   caption: "Manage your labels",
+  //   icon: "las la-tag",
+  //   link: "labels",
+  // },
 ];
 
 export default {
