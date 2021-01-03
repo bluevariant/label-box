@@ -39,6 +39,7 @@
                     :data="rect"
                     :index="index"
                   />
+                  <make-rect :onAdd="onAddRect" />
                 </div>
               </span>
             </div>
@@ -51,6 +52,7 @@
 
 <script>
 import Rect from "../../components/Rect";
+import MakeRect from "../../components/MakeRect";
 import readDir from "src/utils/readDir";
 import _ from "lodash";
 
@@ -69,7 +71,7 @@ function data(self) {
 
 export default {
   name: "PageLabeling",
-  components: { "draw-rect": Rect },
+  components: { "draw-rect": Rect, "make-rect": MakeRect },
   data() {
     return data(this);
   },
@@ -159,6 +161,16 @@ export default {
       if (index >= 0) return this.labels[keys[index]];
 
       return [];
+    },
+    onAddRect(box) {
+      console.log("Add:", box);
+      let items = _.cloneDeep(this.rectItems);
+      items.push({
+        box,
+        label: "aaa",
+        labelIndex: 0,
+      });
+      this.rectItems = items;
     },
   },
 };
