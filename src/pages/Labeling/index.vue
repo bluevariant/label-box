@@ -112,6 +112,11 @@ export default {
       this.readPre(this.images[this.selected]).then((result) => {
         this.rectItems = result;
         this.saveLabels();
+
+        let label = path.basename(this.images[this.selected]).split(".").shift().split("_")[0];
+        if (this.currentLabels.includes(label)) {
+          this.selectedLabel = this.currentLabels.indexOf(label);
+        }
       });
     },
     images() {},
