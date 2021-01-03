@@ -41,7 +41,7 @@ function data(self) {
 }
 
 export default {
-  name: "index",
+  name: "PageLabeling",
   data() {
     return data(this);
   },
