@@ -46,7 +46,7 @@
               </span>
               <div
                 :style="{ position: 'absolute', top: 0, left: 0, width: '100%' }"
-                class="text-white m-chips"
+                class="text-white m-chips text-center"
               >
                 <q-chip
                   square
@@ -59,6 +59,22 @@
                   clickable
                 >
                   {{ chip.label }}
+                </q-chip>
+              </div>
+              <div
+                :style="{ position: 'absolute', bottom: 0, left: 0, width: '100%' }"
+                class="text-white m-chips text-center"
+              >
+                <q-chip
+                  square
+                  v-for="(chip, index) in rectItems"
+                  dense
+                  :icon="'las la-trash'"
+                  :key="index"
+                  clickable
+                  @click="deleteRect(index)"
+                >
+                  #{{ index + 1 }} {{ chip.label }}
                 </q-chip>
               </div>
             </div>
@@ -255,6 +271,12 @@ export default {
         }
       }
       this.saved = saved;
+    },
+    deleteRect(index) {
+      let items = _.cloneDeep(this.rectItems);
+      items.splice(index, 1);
+      this.rectItems = items;
+      this.saveLabels();
     },
   },
 };
