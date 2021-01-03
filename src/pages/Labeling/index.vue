@@ -72,7 +72,7 @@
                   :icon="'las la-trash'"
                   :key="index"
                   clickable
-                  @click="deleteRect(index)"
+                  @click="(e) => deleteRect(e, index)"
                 >
                   #{{ index + 1 }} {{ chip.label }}
                 </q-chip>
@@ -272,9 +272,14 @@ export default {
       }
       this.saved = saved;
     },
-    deleteRect(index) {
+    deleteRect(e, index) {
       let items = _.cloneDeep(this.rectItems);
-      items.splice(index, 1);
+      if (e.shiftKey || e.ctrlKey) {
+        items[index].labelIndex = this.selectedLabel;
+        items[index].label = this.currentLabels[this.selectedLabel];
+      } else {
+        items.splice(index, 1);
+      }
       this.rectItems = items;
       this.saveLabels();
     },
