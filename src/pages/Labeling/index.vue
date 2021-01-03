@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="col-9">
-            <div class="right-side items-center justify-center flex">
+            <div class="right-side items-center justify-center flex" style="position: relative">
               <span class="text-white inline-block image-container relative-position">
                 <img v-if="selected >= 0" :src="images[selected]" alt="thumbnail" />
                 <div class="rect-container text-white">
@@ -42,6 +42,23 @@
                   <make-rect :onAdd="onAddRect" />
                 </div>
               </span>
+              <div
+                :style="{ position: 'absolute', top: 0, left: 0, width: '100%' }"
+                class="text-white m-chips"
+              >
+                <q-chip
+                  square
+                  v-for="(chip, index) in labelOptions"
+                  dense
+                  :icon="'lar la-bookmark'"
+                  :key="index"
+                  :color="chip.value === selectedLabel ? 'primary' : ''"
+                  @click="selectLabel(index)"
+                  clickable
+                >
+                  {{ chip.label }}
+                </q-chip>
+              </div>
             </div>
           </div>
         </div>
@@ -66,6 +83,8 @@ function data(self) {
     selected: -1,
     labels: {},
     rectItems: [],
+    currentLabels: [],
+    selectedLabel: 0,
   };
 }
 
@@ -90,6 +109,14 @@ export default {
       this.readPre(this.images[this.selected]).then((result) => {
         this.rectItems = result;
       });
+    },
+  },
+  computed: {
+    labelOptions() {
+      return this.currentLabels.map((v, i) => ({
+        label: v,
+        value: i,
+      }));
     },
   },
   methods: {
@@ -127,6 +154,7 @@ export default {
     async readPre(src) {
       let preFile = src + ".pre";
       let labels = this.getLabels(src);
+      this.currentLabels = labels;
       let result = [];
 
       if (await fs.pathExists(preFile)) {
@@ -163,14 +191,16 @@ export default {
       return [];
     },
     onAddRect(box) {
-      console.log("Add:", box);
       let items = _.cloneDeep(this.rectItems);
       items.push({
         box,
-        label: "aaa",
-        labelIndex: 0,
+        label: this.currentLabels[this.selectedLabel],
+        labelIndex: this.selectedLabel,
       });
       this.rectItems = items;
+    },
+    selectLabel(index) {
+      this.selectedLabel = index;
     },
   },
 };
@@ -218,9 +248,10 @@ export default {
 
 .image-container img {
   display: block;
-  max-height: calc(100vh - 155px);
+  max-height: calc(100vh - 255px);
   max-width: 100%;
   pointer-events: none;
+  border: 1px solid #ffffff;
 }
 
 .user-select-none {
@@ -233,5 +264,10 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.m-chips {
+  overflow-x: auto;
+  white-space: nowrap;
 }
 </style>
