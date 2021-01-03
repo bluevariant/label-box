@@ -88,10 +88,10 @@ export default {
     calc(mouse) {
       let container = this.$refs.container.getBoundingClientRect();
       return {
-        x: mouse.x - container.x,
-        y: mouse.y - container.y,
-        right: container.width - (mouse.x - container.x) - 2,
-        bottom: container.height - (mouse.y - container.y) - 2,
+        x: mouse.x - container.x - 1,
+        y: mouse.y - container.y - 1,
+        right: container.width - (mouse.x - container.x) - 1,
+        bottom: container.height - (mouse.y - container.y) - 1,
       };
     },
     release(add, mouse) {
