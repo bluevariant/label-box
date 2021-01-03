@@ -18,7 +18,9 @@
               >
                 <div
                   class="items-center justify-center flex bg-black"
-                  :class="selected === index ? 'active' : 'no-active'"
+                  :class="
+                    selected === index ? 'active' : saved[src] ? 'no-active-saved' : 'no-active'
+                  "
                   style="height: 100%; width: 100%"
                 >
                   <span class="inline-block">
@@ -85,6 +87,7 @@ function data(self) {
     rectItems: [],
     currentLabels: [],
     selectedLabel: 0,
+    saved: {},
   };
 }
 
@@ -108,8 +111,10 @@ export default {
       this.rectItems = [];
       this.readPre(this.images[this.selected]).then((result) => {
         this.rectItems = result;
+        this.saveLabels();
       });
     },
+    images() {},
   },
   computed: {
     labelOptions() {
@@ -123,6 +128,9 @@ export default {
     loadImages() {
       this.loading = true;
       readDir(this.$route.query.path).then(async (files) => {
+        files.sort((a, b) => {
+          return path.basename(a).localeCompare(path.basename(b));
+        });
         this.images = _.filter(files, (file) => {
           let whiteExtensions = ["png", "jpg", "gif", "jpeg"];
 
@@ -156,10 +164,16 @@ export default {
       let labels = this.getLabels(src);
       this.currentLabels = labels;
       let result = [];
+      let labelFile = this.getLabelFile(src);
+      let content;
 
-      if (await fs.pathExists(preFile)) {
-        let content = await fs.readFile(preFile, "UTF-8");
-        // 14 0.3947916626930237 0.7510416507720947 0.21041665971279144 0.16458334028720856 0.8662109375
+      if (await fs.pathExists(labelFile)) {
+        content = await fs.readFile(labelFile, "UTF-8");
+      } else if (await fs.pathExists(preFile)) {
+        content = await fs.readFile(preFile, "UTF-8");
+      }
+
+      if (content) {
         result = content
           .split("\n")
           .map((line) => line.trim())
@@ -171,14 +185,17 @@ export default {
               .filter((v) => v.length > 0)
               .map((v) => +v);
             let labelIndex = v[0];
-            return {
+            let final = {
               label: labels[labelIndex],
               labelIndex,
               box: [v[1], v[2], v[3], v[4]],
               weight: v[5],
             };
+            if (v.length < 6) delete final.weight;
+            return final;
           });
       }
+
       return result;
     },
     getLabels(src) {
@@ -198,9 +215,41 @@ export default {
         labelIndex: this.selectedLabel,
       });
       this.rectItems = items;
+      this.saveLabels();
     },
     selectLabel(index) {
       this.selectedLabel = index;
+    },
+    getLabelFile(src) {
+      let labelDir = path.join(src, "../../", "labels");
+      let labelFile = path.join(labelDir, path.basename(src));
+      labelFile = labelFile.split(".");
+      labelFile.pop();
+      labelFile.push("txt");
+      labelFile = labelFile.join(".");
+      return labelFile;
+    },
+    async saveLabels() {
+      let labelFile = this.getLabelFile(this.images[this.selected]);
+      let saveContent = this.rectItems
+        .map((v) => {
+          return [v.labelIndex, ...v.box]
+            .map((v) => parseFloat(parseFloat(v).toFixed(6)))
+            .join(" ");
+        })
+        .join("\n");
+      await fs.ensureFileSync(labelFile);
+      await fs.writeFile(labelFile, saveContent);
+      await this.updateSaved();
+    },
+    async updateSaved() {
+      let saved = _.cloneDeep(this.saved);
+      for (let src of this.images) {
+        if (!saved[src]) {
+          saved[src] = await fs.pathExists(this.getLabelFile(src));
+        }
+      }
+      this.saved = saved;
     },
   },
 };
@@ -224,6 +273,10 @@ export default {
 
 .no-active {
   border: 4px solid rgba(0, 0, 0, 0.1);
+}
+
+.no-active-saved {
+  border: 4px solid green;
 }
 
 .no-active img {
